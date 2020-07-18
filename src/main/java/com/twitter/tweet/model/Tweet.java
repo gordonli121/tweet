@@ -1,21 +1,29 @@
 package com.twitter.tweet.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Array;
 import java.sql.Timestamp;
 
+@Document(collection = "tweets")
 public class Tweet {
     @Id
-    private Long id;
+    private ObjectId id;
 
+    private String content;
     private int retweetCount;
     private int likeCount;
     private Timestamp timestamp;
     private int commentCount;
     private String[] comments;
 
-    public Tweet(int retweetCount, int likeCount, Timestamp timestamp, int commentCount, String[] comments) {
+    public Tweet(){
+    }
+
+    public Tweet(ObjectId id, String content,  int retweetCount, int likeCount, Timestamp timestamp, int commentCount, String[] comments) {
+        this.id = id;
+        this.content = content;
         this.retweetCount = retweetCount;
         this.likeCount = likeCount;
         this.timestamp = timestamp;
@@ -23,12 +31,20 @@ public class Tweet {
         this.comments = comments;
     }
 
-    public Long getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getRetweetCount() {
@@ -67,7 +83,9 @@ public class Tweet {
         return comments;
     }
 
-    public void setComments(String[] comments) {
-        this.comments = comments;
+    @Override
+    public String toString() {
+        return "Tweet [id=" + id + ", retweetCount=" + retweetCount + ", likeCount=" + likeCount
+                + ", commentCount=" + commentCount + "]";
     }
 }
