@@ -1,41 +1,50 @@
 package com.twitter.tweet.model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Document(collection = "tweets")
 public class Tweet {
     @Id
-    private ObjectId id;
-
+    private String id;
     private String content;
     private int retweetCount;
     private int likeCount;
-    private Timestamp timestamp;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private Date timestamp = new Date();
     private int commentCount;
-    private String[] comments;
+    private List<String> comments;
 
     public Tweet(){
     }
 
-    public Tweet(ObjectId id, String content,  int retweetCount, int likeCount, Timestamp timestamp, int commentCount, String[] comments) {
-        this.id = id;
+    public Tweet(String content,  int retweetCount, int likeCount, int commentCount, List<String> comments) {
         this.content = content;
         this.retweetCount = retweetCount;
         this.likeCount = likeCount;
-        this.timestamp = timestamp;
+//        String pattern = "yyyyMMddHHmmssms";
+//        DateFormat df = new SimpleDateFormat(pattern);
+//        Date today = Calendar.getInstance().getTime();
+//        this.timestamp = new SimpleDateFormat("yyyyMMddHHmmssms").format(Calendar.getInstance().getTime());
         this.commentCount = commentCount;
         this.comments = comments;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,11 +72,11 @@ public class Tweet {
         this.likeCount = likeCount;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -79,7 +88,7 @@ public class Tweet {
         this.commentCount = commentCount;
     }
 
-    public String[] getComments() {
+    public List<String> getComments() {
         return comments;
     }
 
