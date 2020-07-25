@@ -1,53 +1,39 @@
 package com.twitter.tweet.controller;
 
-import com.twitter.tweet.exceptions.TweetNotFoundException;
 import com.twitter.tweet.model.Tweet;
-import com.twitter.tweet.repository.TweetRepository;
 import com.twitter.tweet.service.TweetServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("tweets")
 public class TweetController {
-    @Autowired
-    private TweetRepository tweetRepository;
+    private TweetServiceImp tweetService = new TweetServiceImp();
 
     @GetMapping
-    public List<Tweet> getTweet(){
-        return tweetRepository.findAll();
+    public ResponseEntity<List<Tweet>> getTweet(){
+        return tweetService.findAll();
     }
 
     @PostMapping
-    public Tweet postTweet(@RequestBody Tweet tweet){
-        return tweetRepository.save(tweet);
+    public ResponseEntity<Tweet> postTweet(@RequestBody Tweet tweet){
+        return tweetService.postTweet(tweet);
     }
 
     @GetMapping("/{id}")
-    public Tweet getTweetById(@PathVariable("id") String id) {
-        return tweetRepository.findById(id)
-                .orElseThrow(() -> new TweetNotFoundException(id));
+    public ResponseEntity<Tweet> getTweetById(@PathVariable("id") String id) {
+        return tweetService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Optional<Tweet> updateTweet(@RequestBody String newContent, @PathVariable("id") String id) {
-        return tweetRepository.findById(id)
-                .map(tweet -> {
-                    tweet.setContent(newContent);
-                    tweet.setTimestamp(new Date());
-                    return tweetRepository.save(tweet);
-                });
+    public ResponseEntity<Tweet> updateTweet(@PathVariable("id") String id, @RequestBody String newContent) {
+        return tweetService.updateTweet(id, newContent);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTweet(@PathVariable("id") String id) {
-        tweetRepository.deleteById(id);
+    public ResponseEntity<HttpStatus> deleteTweet(@PathVariable("id") String id) {
+        return tweetService.deleteById(id);
     }
 }
