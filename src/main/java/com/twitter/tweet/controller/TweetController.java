@@ -2,6 +2,7 @@ package com.twitter.tweet.controller;
 
 import com.twitter.tweet.model.Tweet;
 import com.twitter.tweet.service.TweetServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("tweets")
 public class TweetController {
-    private TweetServiceImp tweetService = new TweetServiceImp();
+    @Autowired
+    private TweetServiceImp tweetService;
 
     @GetMapping
     public ResponseEntity<List<Tweet>> getTweet(){
