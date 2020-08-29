@@ -1,0 +1,19 @@
+server:
+  port: 3008
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      database: twitter
+      username: twitter
+      password: twitterPassword
+
+
+---
+spring:
+  profiles: kube
+  data:
+    mongodb:
+      database: twitter
+      username: twitter
+      password: twitterPassword
