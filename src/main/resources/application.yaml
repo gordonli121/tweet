@@ -1,5 +1,11 @@
 server:
   port: 3008
+logging:
+  org:
+    springframework:
+      web:
+        filter:
+          CommonsRequestLoggingFilter: DEBUG
 spring:
   profiles: dev
   data:
@@ -13,10 +19,21 @@ spring:
     accessKeySecret: ${AWS_ACCESS_KEY_SECRET}
     region: ${AWS_REGION}
 ---
+server:
+    port: 3008
 spring:
   profiles: kube
   data:
     mongodb:
-      database: twitter
-      username: twitter
-      password: twitterPassword
+      uri: ${MONGO_URL}
+  aws:
+    sqsUrl: ${AWS_SQS_URL}
+    accessKey: ${AWS_ACCESS_KEY}
+    accessKeySecret: ${AWS_ACCESS_KEY_SECRET}
+    region: ${AWS_REGION}
+logging:
+  org:
+    springframework:
+      web:
+        filter:
+          CommonsRequestLoggingFilter: DEBUG
